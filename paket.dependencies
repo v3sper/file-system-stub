@@ -1,1 +1,5 @@
 source https://www.nuget.org/api/v2
+
+storage: none
+
+nuget NUnit 3.10.1
