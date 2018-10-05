@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "File.System.Stub", "File.Sy
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{8708FFB4-1C18-46C8-B727-FD2AEF6F5862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File.System.Stub.UnitTests", "File.System.Stub.UnitTests\File.System.Stub.UnitTests.csproj", "{0AD87772-EB2D-4CF2-95E2-24FFF8912B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "File.System.Stub.UnitTests", "File.System.Stub.UnitTests\File.System.Stub.UnitTests.csproj", "{0AD87772-EB2D-4CF2-95E2-24FFF8912B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File.System.Stub.IntegrationTests", "File.System.Stub.IntegrationTests\File.System.Stub.IntegrationTests.csproj", "{36CBC05F-17AA-4678-A805-BBB9F48F4F64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "File.System.Stub.IntegrationTests", "File.System.Stub.IntegrationTests\File.System.Stub.IntegrationTests.csproj", "{36CBC05F-17AA-4678-A805-BBB9F48F4F64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{063B106E-6E96-46D6-B256-10D01210FBF5}"
+	ProjectSection(SolutionItems) = preProject
+		..\paket.dependencies = ..\paket.dependencies
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
