@@ -2,7 +2,7 @@
 
 namespace File.System.Stub.IO
 {
-	public interface IFileInfo
+	public interface IFileInformation
 	{
 		DateTime CreationTimeUtc { get; }
 		bool IsReadOnly { get; }

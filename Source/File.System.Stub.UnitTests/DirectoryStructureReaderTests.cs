@@ -13,7 +13,7 @@ namespace File.System.Stub.UnitTests
 
 		public static async Task ItShouldReturnProperStructure()
 		{
-			DirectoryStructureReader reader = new DirectoryStructureReader(new DirectoryInfoFactory());
+			DirectoryStructureReader reader = new DirectoryStructureReader(new DirectoryInformationFactory());
 			var stub = await reader.ReadAsync(folder, CancellationToken.None).ConfigureAwait(false);
 		}
 	}

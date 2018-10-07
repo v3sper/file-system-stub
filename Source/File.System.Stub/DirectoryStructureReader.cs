@@ -11,10 +11,10 @@ namespace File.System.Stub
 	public sealed class DirectoryStructureReader
 	{
 		private readonly ConcurrentQueue<IReadOperation> _readOperations = new ConcurrentQueue<IReadOperation>();
-		private readonly IDirectoryInfoFactory _directoryInfoFactory;
+		private readonly IDirectoryInformationFactory _directoryInfoFactory;
 		private readonly int _maxSimultaneousOperations;
 
-		public DirectoryStructureReader(IDirectoryInfoFactory directoryInfoFactory, /*wywalić*/int maxSimultaneousOperations = 1)
+		public DirectoryStructureReader(IDirectoryInformationFactory directoryInfoFactory, /*wywalić*/int maxSimultaneousOperations = 1)
 		{
 			_directoryInfoFactory = directoryInfoFactory;
 			_maxSimultaneousOperations = maxSimultaneousOperations;

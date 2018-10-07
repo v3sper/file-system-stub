@@ -2,9 +2,9 @@
 {
 	public sealed class DirectoryInfoFactory : IDirectoryInfoFactory
 	{
-		public IDirectoryInfo Create(string path)
+		public IDirectoryInformation Create(string path)
 		{
-			return new DirectoryInfo(path);
+			return new DirectoryInformation(path);
 		}
 	}
 }

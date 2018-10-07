@@ -1,13 +1,12 @@
 ﻿using System;
-using SystemFileInfo = System.IO.FileInfo;
 
 namespace File.System.Stub.IO
 {
-	internal class FileInfo : IFileInfo
+	internal class FileInformation : IFileInformation
 	{
-		private readonly SystemFileInfo _systemFileInfo;
+		private readonly FileInfo _systemFileInfo;
 
-		public FileInfo(SystemFileInfo systemFileInfo)
+		public FileInformation(FileInfo systemFileInfo)
 		{
 			_systemFileInfo = systemFileInfo;
 		}

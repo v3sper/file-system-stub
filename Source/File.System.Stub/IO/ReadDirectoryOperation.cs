@@ -26,7 +26,7 @@ namespace File.System.Stub.IO
 			return directoryOperationList;
 		}
 
-		private FileStub GetFileStubFromFileInfo(IFileInfo fileInfo)
+		private FileStub GetFileStubFromFileInfo(IFileInformation fileInfo)
 		{
 			return new FileStub
 			{
