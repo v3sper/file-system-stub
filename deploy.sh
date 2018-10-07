@@ -1,19 +1,32 @@
+#!/bin/sh
 NUGET_TOKEN=$1
-NUGET_SOURCE=$2
-TRAVIS_BRANCH=$3
-TRAVIS_BUILD_NUMBER=$4
+TRAVIS_BRANCH=$2
+TRAVIS_BUILD_NUMBER=$3
 
-if [[ $TRAVIS_BRANCH =~ "^fss-*" ]]
+MASTER_OR_RELEASE_BRANCH_REGEX="^(master$|release[-]{1}.*)"
+DEVELOP_REGEX="^develop$"
+SHORT_LIVED_BRANCH_FSS_REGEX="^fss[-]{1}.*"
+
+if [[ $TRAVIS_BRANCH =~ $SHORT_LIVED_BRANCH_FSS_REGEX ]]
 then
-    SUFFIX = "-alpha"
-elif [[ $TRAVIS_BRANCH = "develop" ]]
+    echo "Creating package for short lived branch (alpha)"
+    SUFFIX="-alpha"
+elif [[ $TRAVIS_BRANCH =~ $DEVELOP_REGEX ]]
 then
-    SUFFIX = "-beta"
-elif [[ $TRAVIS_BRANCH =~ "^(master$|release-*)" ]]
+    echo "Creating package for develop branch (beta)"
+    SUFFIX="-beta"
+elif [[ $TRAVIS_BRANCH =~ $MASTER_OR_RELEASE_BRANCH_REGEX ]]
 then
-    SUFFIX = ""
+    echo "Creating package for master/release branch"
+    SUFFIX=""
 else
-	return
+	exit 0
 fi
 
-.paket/paket pack nuget-files --version "0.0.0-$SUFFIX"
+MAJOR_MINOR=$(head -n 1 "version")
+VERSION="$MAJOR_MINOR.$TRAVIS_BUILD_NUMBER$SUFFIX"
+echo "Deploying package in version $VERSION"
+
+.paket/paket pack nuget-files --version $VERSION
+
+.paket/paket push --endpoint https://nuget.org/ --api-key $NUGET_TOKEN nuget-files/*.nupkg
