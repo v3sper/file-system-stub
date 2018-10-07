@@ -29,4 +29,4 @@ echo "Deploying package in version $VERSION"
 
 .paket/paket pack nuget-files --version $VERSION
 
-dotnet nuget push nuget-files/*.nupkg -Source https://nuget.org/ -ApiKey $NUGET_TOKEN
+dotnet nuget push nuget-files/*.nupkg --source https://nuget.org/ --api-key $NUGET_TOKEN
