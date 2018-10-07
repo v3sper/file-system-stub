@@ -15,6 +15,11 @@ namespace File.System.Stub
 		private readonly IDirectoryInformationFactory _directoryInfoFactory;
 		private readonly int _maxSimultaneousOperations;
 
+		public DirectoryStructureReader() : this(new DirectoryInformationFactory())
+		{
+
+		}
+
 		public DirectoryStructureReader(IDirectoryInformationFactory directoryInfoFactory, /*wywalić*/int maxSimultaneousOperations = 1)
 		{
 			_directoryInfoFactory = directoryInfoFactory;
