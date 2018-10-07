@@ -1,0 +1,95 @@
+﻿using File.System.Stub.IO;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace File.System.Stub
+{
+
+	public sealed class DirectoryStructureReader
+	{
+		private readonly ConcurrentQueue<IReadOperation> _readOperations = new ConcurrentQueue<IReadOperation>();
+		private readonly IDirectoryInfoFactory _directoryInfoFactory;
+		private readonly int _maxSimultaneousOperations;
+
+		public DirectoryStructureReader(IDirectoryInfoFactory directoryInfoFactory, /*wywalić*/int maxSimultaneousOperations = 1)
+		{
+			_directoryInfoFactory = directoryInfoFactory;
+			_maxSimultaneousOperations = maxSimultaneousOperations;
+		}
+
+		public RootStub Read(string path)
+		{
+			var stub = new RootStub { Path = path };
+			stub.Directory = GetContent(path);
+			return stub;
+		}
+
+		// TODO najpewniej wywalić :)
+		public async Task<RootStub> ReadAsync(string path, CancellationToken token)
+		{
+			var stub = new RootStub { Path = path };
+			stub.Directory = await GetContentAsync(path, token).ConfigureAwait(false);
+			return stub;
+		}
+
+		private DirectoryStub GetContent(string path)
+		{
+			DirectoryStub directoryStub = new DirectoryStub { Name = path };
+			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, _directoryInfoFactory.Create(path), _directoryInfoFactory));
+			while (_readOperations.TryDequeue(out var readOperation))
+			{
+				DoOperation(readOperation);
+			}
+			return directoryStub;
+		}
+
+		// TODO najpewniej wywalić :)
+		private async Task<DirectoryStub> GetContentAsync(string path, CancellationToken token)
+		{
+			DirectoryStub directoryStub = new DirectoryStub { Name = path };
+			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, _directoryInfoFactory.Create(path), _directoryInfoFactory));
+			await Task.WhenAll(Enumerable.Repeat(0, _maxSimultaneousOperations).Select(_ => Task.Run(() => DoRead(new SemaphoreSlim(_maxSimultaneousOperations), token))).ToArray()).ConfigureAwait(false);
+			return directoryStub;
+		}
+
+		// TODO najpewniej wywalić :)
+		private async Task DoRead(SemaphoreSlim semaphore, CancellationToken token)
+		{
+			while (!token.IsCancellationRequested)
+			{
+				if (_readOperations.TryDequeue(out var readOperation))
+				{
+					try
+					{
+						await semaphore.WaitAsync(token).ConfigureAwait(false);
+						DoOperation(readOperation);
+					}
+					finally
+					{
+						semaphore.Release();
+					}
+				}
+				else if (semaphore.CurrentCount == _maxSimultaneousOperations)
+				{
+					return;
+				}
+				else
+				{
+					await Task.Delay(1).ConfigureAwait(false);
+				}
+			}
+		}
+
+		private void DoOperation(IReadOperation readOperation)
+		{
+			IEnumerable<IReadOperation> newOperations = readOperation.DoOperation();
+			foreach(var newOperation in newOperations)
+			{
+				_readOperations.Enqueue(newOperation);
+			}
+		}
+	}
+}
