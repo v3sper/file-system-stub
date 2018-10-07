@@ -1,4 +1,5 @@
 ﻿using File.System.Stub.IO;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,14 @@ namespace File.System.Stub
 			_maxSimultaneousOperations = maxSimultaneousOperations;
 		}
 
-		public RootStub Read(string path)
+		public RootStub Read(string rootPath)
 		{
-			var stub = new RootStub { Path = path };
-			stub.Directory = GetContent(path);
+			if (rootPath == null)
+			{
+				throw new ArgumentNullException(nameof(rootPath), "Root path cannot be null.");
+			}
+			var stub = new RootStub { Path = rootPath };
+			stub.Directory = GetContent(rootPath);
 			return stub;
 		}
 
@@ -37,8 +42,9 @@ namespace File.System.Stub
 
 		private DirectoryStub GetContent(string path)
 		{
-			DirectoryStub directoryStub = new DirectoryStub { Name = path };
-			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, _directoryInfoFactory.Create(path), _directoryInfoFactory));
+			IDirectoryInformation directoryInfo = _directoryInfoFactory.Create(path);
+			DirectoryStub directoryStub = new DirectoryStub { Name = directoryInfo.Name };
+			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, directoryInfo));
 			while (_readOperations.TryDequeue(out var readOperation))
 			{
 				DoOperation(readOperation);
@@ -50,7 +56,7 @@ namespace File.System.Stub
 		private async Task<DirectoryStub> GetContentAsync(string path, CancellationToken token)
 		{
 			DirectoryStub directoryStub = new DirectoryStub { Name = path };
-			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, _directoryInfoFactory.Create(path), _directoryInfoFactory));
+			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, _directoryInfoFactory.Create(path)));
 			await Task.WhenAll(Enumerable.Repeat(0, _maxSimultaneousOperations).Select(_ => Task.Run(() => DoRead(new SemaphoreSlim(_maxSimultaneousOperations), token))).ToArray()).ConfigureAwait(false);
 			return directoryStub;
 		}

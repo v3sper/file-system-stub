@@ -4,3 +4,4 @@ Newtonsoft.Json
 FluentAssertions
 Microsoft.NET.Test.Sdk
 NUnit3TestAdapter
+NSubstitute

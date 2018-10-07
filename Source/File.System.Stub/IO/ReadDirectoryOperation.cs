@@ -1,5 +1,4 @@
-﻿using File.System.Stub.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace File.System.Stub.IO
@@ -9,19 +8,17 @@ namespace File.System.Stub.IO
 		private readonly IDirectoryInformation _directoryInfo;
 
 		public DirectoryStub CurrentStub { get; }
-		private readonly IDirectoryInformationFactory _directoryInfoFactory;
 
-		public ReadDirectoryOperation(DirectoryStub directoryStub, IDirectoryInformation directoryInfo, IDirectoryInformationFactory directoryInfoFactory)
+		public ReadDirectoryOperation(DirectoryStub directoryStub, IDirectoryInformation directoryInfo)
 		{
 			CurrentStub = directoryStub;
 			_directoryInfo = directoryInfo;
-			_directoryInfoFactory = directoryInfoFactory;
 		}
 
 		public IEnumerable<IReadOperation> DoOperation()
 		{
 			CurrentStub.Files = _directoryInfo.EnumerateFiles().Select(GetFileStubFromFileInfo).ToList();
-			var directoryOperationList = _directoryInfo.EnumerateDirectories().Select(dirInfo => new ReadDirectoryOperation(new DirectoryStub { ParentDirectory = CurrentStub, Name = dirInfo.Name }, dirInfo, _directoryInfoFactory)).ToList();
+			var directoryOperationList = _directoryInfo.EnumerateDirectories().Select(dirInfo => new ReadDirectoryOperation(new DirectoryStub { ParentDirectory = CurrentStub, Name = dirInfo.Name }, dirInfo)).ToList();
 			CurrentStub.Directories = directoryOperationList.Select(dirOperation => dirOperation.CurrentStub).ToList();
 			return directoryOperationList;
 		}
