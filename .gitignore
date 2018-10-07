@@ -281,8 +281,12 @@ node_modules/
 _Pvt_Extensions
 
 # Paket dependency manager
-.paket/paket.bootstrapper.exe
 paket-files/
+/.paket/*
+!/.paket/*.proj
+!/.paket/*.exe.config
+!/.paket/*.props
+!/.paket/*.targets
 
 # FAKE - F# Make
 .fake/

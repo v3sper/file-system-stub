@@ -1,3 +1,6 @@
 NUnit
 Microsoft.CodeAnalysis.FxCopAnalyzers
 Newtonsoft.Json
+FluentAssertions
+Microsoft.NET.Test.Sdk
+NUnit3TestAdapter

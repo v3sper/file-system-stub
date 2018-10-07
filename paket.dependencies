@@ -1,7 +1,12 @@
+framework: auto-detect
+
 source https://www.nuget.org/api/v2
 
 storage: none
 
+nuget FluentAssertions 5.4.2
 nuget Microsoft.CodeAnalysis.FxCopAnalyzers 2.6.2
+nuget Microsoft.NET.Test.Sdk 15.8.0
 nuget Newtonsoft.Json 11.0.2
 nuget NUnit 3.10.1
+nuget NUnit3TestAdapter 3.10.0
