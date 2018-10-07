@@ -6,12 +6,12 @@ namespace File.System.Stub.IO
 {
 	public class ReadDirectoryOperation : IReadOperation
 	{
-		private readonly IDirectoryInfo _directoryInfo;
+		private readonly IDirectoryInformation _directoryInfo;
 
 		public DirectoryStub CurrentStub { get; }
-		private readonly IDirectoryInfoFactory _directoryInfoFactory;
+		private readonly IDirectoryInformationFactory _directoryInfoFactory;
 
-		public ReadDirectoryOperation(DirectoryStub directoryStub, IDirectoryInfo directoryInfo, IDirectoryInfoFactory directoryInfoFactory)
+		public ReadDirectoryOperation(DirectoryStub directoryStub, IDirectoryInformation directoryInfo, IDirectoryInformationFactory directoryInfoFactory)
 		{
 			CurrentStub = directoryStub;
 			_directoryInfo = directoryInfo;
