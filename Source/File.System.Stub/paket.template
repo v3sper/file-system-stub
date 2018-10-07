@@ -1,0 +1,10 @@
+type project
+id File.System.Stub
+authors Patryk Stepien, Patryk Spytkowski
+DESCRIPTION
+    Library used to create file system hierarchy based on JSON file and create JSON files based on file system hierarchy.
+	It's main purpose is to help out with writing integration or performance tests which require predefined file system hierarchy.
+title File System Stub
+projectUrl https://github.com/v3sper/file-system-stub
+licenseUrl https://opensource.org/licenses/MIT
+requireLicenseAcceptance false
