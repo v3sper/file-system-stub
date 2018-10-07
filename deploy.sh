@@ -1,1 +1,1 @@
-paket pack nuget-files --version 0.0.0-alpha
+.paket/paket pack nuget-files --version 0.0.0-alpha
