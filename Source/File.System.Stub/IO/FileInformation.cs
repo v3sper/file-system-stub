@@ -16,13 +16,13 @@ namespace File.System.Stub.IO
 
 		public string Path => _systemFileInfo.FullName;
 
-		public DateTime CreationTimeUtc => _systemFileInfo.CreationTimeUtc;
+		public DateTime CreationTimeUtc => _systemFileInfo.CreationTime;
 
 		public bool IsReadOnly => _systemFileInfo.IsReadOnly;
 
-		public DateTime LastAccessTimeUtc => _systemFileInfo.LastAccessTimeUtc;
+		public DateTime LastAccessTimeUtc => _systemFileInfo.LastAccessTime;
 
-		public DateTime LastWriteTimeUtc => _systemFileInfo.LastWriteTimeUtc;
+		public DateTime LastWriteTimeUtc => _systemFileInfo.LastWriteTime;
 
 		public long Size => _systemFileInfo.Length;
 	}
