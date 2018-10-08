@@ -15,17 +15,16 @@ namespace File.System.Stub.UnitTests
 	[TestFixture]
 	public class DirectoryStructureReaderTests
 	{
-		private const string RootPath = "root";
-		private const string NonExistentPath = "non-existent path";
-		private const string MockedFileName = "the file";
-		private const bool MockedIsReadOnlyFlag = true;
-		private const string NonEmptyDirectoryName = "non empty directory";
-		private const string EmptyDirectoryName = "empty directory";
-		private const string TwoLevelDirectoryName = "two level directory";
-		private static readonly DateTime MockedLastAccessTime = new DateTime(2019, 11, 06, 22, 33, 22);
-		private static readonly DateTime MockedLastWriteTime = new DateTime(2018, 10, 07, 22, 33, 22);
-		private static readonly DateTime MockedCreationTime = new DateTime(2017, 9, 08, 02, 45, 34);
-
+		private string _rootPath;
+		private string _nonExistentPath;
+		private string _mockedFileName;
+		private bool _mockedIsReadOnlyFlag;
+		private string _nonEmptyDirectoryName;
+		private string _emptyDirectoryName;
+		private string _twoLevelDirectoryName;
+		private DateTime _mockedLastAccessTime;
+		private DateTime _mockedLastWriteTime;
+		private DateTime _mockedCreationTime;
 
 		private IDirectoryInformationFactory _directoryInformationFactory;
 		private IDirectoryInformation _twoLevelDirectory;
@@ -37,29 +36,39 @@ namespace File.System.Stub.UnitTests
 		private DirectoryStructureReader _reader;
 
 		[OneTimeSetUp]
-		public void OneTimeSteup()
+		public void OneTimeSetUp()
 		{
+			_rootPath = "root";
+			_nonExistentPath = "non-existent path";
+			_mockedFileName = "the file";
+			_mockedIsReadOnlyFlag = true;
+			_nonEmptyDirectoryName = "non empty directory";
+			_emptyDirectoryName = "empty directory";
+			_twoLevelDirectoryName = "two level directory";
+
+			_mockedLastAccessTime = new DateTime(2019, 11, 06, 22, 33, 22);
+			_mockedLastWriteTime = new DateTime(2018, 10, 07, 22, 33, 22);
+			_mockedCreationTime = new DateTime(2017, 9, 08, 02, 45, 34);
+
 			_fileInformation = Substitute.For<IFileInformation>();
-			_fileInformation.Name.Returns(MockedFileName);
-			_fileInformation.IsReadOnly.Returns(MockedIsReadOnlyFlag);
-			_fileInformation.LastAccessTimeUtc.Returns(MockedLastAccessTime);
-			_fileInformation.LastWriteTimeUtc.Returns(MockedLastWriteTime);
-			_fileInformation.CreationTimeUtc.Returns(MockedCreationTime);
+			_fileInformation.Name.Returns(_mockedFileName);
+			_fileInformation.IsReadOnly.Returns(_mockedIsReadOnlyFlag);
+			_fileInformation.LastAccessTimeUtc.Returns(_mockedLastAccessTime);
+			_fileInformation.LastWriteTimeUtc.Returns(_mockedLastWriteTime);
+			_fileInformation.CreationTimeUtc.Returns(_mockedCreationTime);
 
 			_nonEmptyDirectory = Substitute.For<IDirectoryInformation>();
-			_nonEmptyDirectory.Name.Returns(NonEmptyDirectoryName);
+			_nonEmptyDirectory.Name.Returns(_nonEmptyDirectoryName);
 			_nonEmptyDirectory.EnumerateFiles().Returns(new[] { _fileInformation });
 
 			_emptyDirectory = Substitute.For<IDirectoryInformation>();
-			_emptyDirectory.Name.Returns(EmptyDirectoryName);
+			_emptyDirectory.Name.Returns(_emptyDirectoryName);
 			_emptyDirectory.EnumerateFiles().Returns(Enumerable.Empty<IFileInformation>());
 			_emptyDirectory.EnumerateDirectories().Returns(Enumerable.Empty<IDirectoryInformation>());
 
 			_twoLevelDirectory = Substitute.For<IDirectoryInformation>();
-			_twoLevelDirectory.Name.Returns(TwoLevelDirectoryName);
+			_twoLevelDirectory.Name.Returns(_twoLevelDirectoryName);
 			_twoLevelDirectory.EnumerateDirectories().Returns(new[] { _nonEmptyDirectory });
-
-			_directoryInformationFactory = Substitute.For<IDirectoryInformationFactory>();
 		}
 
 		[SetUp]
@@ -74,26 +83,26 @@ namespace File.System.Stub.UnitTests
 		{
 			_directoryInformationFactory.Create(Arg.Any<string>()).Returns(_twoLevelDirectory);
 
-			RootStub result = _reader.Read(RootPath);
+			RootStub result = _reader.Read(_rootPath);
 
-			result.Path.Should().Be(RootPath);
-			result.Directory.Name.Should().Be(TwoLevelDirectoryName);
+			result.Path.Should().Be(_rootPath);
+			result.Directory.Name.Should().Be(_twoLevelDirectoryName);
 			result.Directory.ParentDirectory.Should().BeNull();
 			result.Directory.Files.Should().BeEmpty();
 			result.Directory.Directories.First().Directories.Should().BeEmpty();
 			result.Directory.Directories.First().Files.Count().Should().Be(1);
-			result.Directory.Directories.First().Files.First().Name.Should().Be(MockedFileName);
+			result.Directory.Directories.First().Files.First().Name.Should().Be(_mockedFileName);
 		}
 
 		[Test]
 		public void ItShouldReturnStructureForEmptyDirectory()
 		{
-			_directoryInformationFactory.Create(Arg.Any<string>()).Returns(_emptyDirectory);
+			_directoryInformationFactory.Create(_rootPath).Returns(_emptyDirectory);
 
-			RootStub result = _reader.Read(RootPath);
+			RootStub result = _reader.Read(_rootPath);
 
-			result.Path.Should().Be(RootPath);
-			result.Directory.Name.Should().Be(EmptyDirectoryName);
+			result.Path.Should().Be(_rootPath);
+			result.Directory.Name.Should().Be(_emptyDirectoryName);
 			result.Directory.Directories.Should().BeEmpty();
 			result.Directory.Files.Should().BeEmpty();
 		}
@@ -101,29 +110,29 @@ namespace File.System.Stub.UnitTests
 		[Test]
 		public void ItShouldReturnFileInfoWithCorrectAttributes()
 		{
-			_directoryInformationFactory.Create(Arg.Any<string>()).Returns(_nonEmptyDirectory);
+			_directoryInformationFactory.Create(_rootPath).Returns(_nonEmptyDirectory);
 
-			RootStub result = _reader.Read(RootPath);
+			RootStub result = _reader.Read(_rootPath);
 
-			result.Path.Should().Be(RootPath);
-			result.Directory.Name.Should().Be(NonEmptyDirectoryName);
+			result.Path.Should().Be(_rootPath);
+			result.Directory.Name.Should().Be(_nonEmptyDirectoryName);
 			result.Directory.Directories.Should().BeEmpty();
 			result.Directory.Files.Count().Should().Be(1);
 
 			var fileInfo = result.Directory.Files.First();
-			fileInfo.Name.Should().Be(MockedFileName);
-			fileInfo.IsReadOnly.Should().Be(MockedIsReadOnlyFlag);
-			fileInfo.CreationTime.Should().Be(MockedCreationTime);
-			fileInfo.LastAccessTime.Should().Be(MockedLastAccessTime);
-			fileInfo.LastWriteTime.Should().Be(MockedLastWriteTime);
+			fileInfo.Name.Should().Be(_mockedFileName);
+			fileInfo.IsReadOnly.Should().Be(_mockedIsReadOnlyFlag);
+			fileInfo.CreationTime.Should().Be(_mockedCreationTime);
+			fileInfo.LastAccessTime.Should().Be(_mockedLastAccessTime);
+			fileInfo.LastWriteTime.Should().Be(_mockedLastWriteTime);
 		}
 
 		[Test]
-		public void ItShouldThrowDirectoryNotFoundExceptionIfRootPathDoesntExist()
+		public void ItShouldThrowDirectoryNotFoundExceptionIfRootPathDoesNotExist()
 		{
-			_directoryInformationFactory.Create(Arg.Any<string>()).Throws(new DirectoryNotFoundException());
+			_directoryInformationFactory.Create(_rootPath).Throws(new DirectoryNotFoundException());
 
-			Action readingOfNonExistentPath = () => _reader.Read(NonExistentPath);
+			Action readingOfNonExistentPath = () => _reader.Read(_nonExistentPath);
 
 			readingOfNonExistentPath.Should().Throw<DirectoryNotFoundException>();
 		}

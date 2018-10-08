@@ -9,5 +9,6 @@ namespace File.System.Stub.IO
 		DateTime LastAccessTimeUtc { get; }
 		DateTime LastWriteTimeUtc { get; }
 		string Name { get; }
+		long Size { get; }
 	}
 }

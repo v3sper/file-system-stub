@@ -2,9 +2,8 @@
 
 namespace File.System.Stub.IO
 {
-	public interface IReadOperation
+	internal interface IReadOperation
 	{
-		DirectoryStub CurrentStub { get; }
 		IEnumerable<IReadOperation> DoOperation();
 	}
 }

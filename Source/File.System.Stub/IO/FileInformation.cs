@@ -3,7 +3,7 @@ using System.IO;
 
 namespace File.System.Stub.IO
 {
-	internal class FileInformation : IFileInformation
+	internal sealed class FileInformation : IFileInformation
 	{
 		private readonly FileInfo _systemFileInfo;
 
@@ -23,5 +23,7 @@ namespace File.System.Stub.IO
 		public DateTime LastAccessTimeUtc => _systemFileInfo.LastAccessTimeUtc;
 
 		public DateTime LastWriteTimeUtc => _systemFileInfo.LastWriteTimeUtc;
+
+		public long Size => _systemFileInfo.Length;
 	}
 }

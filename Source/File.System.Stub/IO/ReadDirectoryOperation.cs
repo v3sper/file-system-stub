@@ -3,29 +3,29 @@ using System.Linq;
 
 namespace File.System.Stub.IO
 {
-	public class ReadDirectoryOperation : IReadOperation
+	internal sealed class ReadDirectoryOperation : IReadOperation
 	{
 		private readonly IDirectoryInformation _directoryInfo;
 
-		public DirectoryStub CurrentStub { get; }
+		private readonly DirectoryStub _currentStub;
 
 		public ReadDirectoryOperation(DirectoryStub directoryStub, IDirectoryInformation directoryInfo)
 		{
-			CurrentStub = directoryStub;
+			_currentStub = directoryStub;
 			_directoryInfo = directoryInfo;
 		}
 
 		public IEnumerable<IReadOperation> DoOperation()
 		{
-			CurrentStub.Files = _directoryInfo.EnumerateFiles().Select(GetFileStubFromFileInfo).ToList();
+			_currentStub.Files = _directoryInfo.EnumerateFiles().Select(GetFileStubFromFileInfo).ToList();
 			var directoryOperationList = _directoryInfo.EnumerateDirectories().Select(CreateReadDirectoryOperation).ToList();
-			CurrentStub.Directories = directoryOperationList.Select(dirOperation => dirOperation.CurrentStub).ToList();
+			_currentStub.Directories = directoryOperationList.Select(dirOperation => dirOperation._currentStub).ToList();
 			return directoryOperationList;
 		}
 
 		private ReadDirectoryOperation CreateReadDirectoryOperation(IDirectoryInformation dirInfo)
 		{
-			var directoryStub = new DirectoryStub { ParentDirectory = CurrentStub, Name = dirInfo.Name };
+			var directoryStub = new DirectoryStub { ParentDirectory = _currentStub, Name = dirInfo.Name };
 			return new ReadDirectoryOperation(directoryStub, dirInfo);
 		}
 
@@ -38,7 +38,8 @@ namespace File.System.Stub.IO
 				LastWriteTime = fileInfo.LastWriteTimeUtc,
 				LastAccessTime = fileInfo.LastAccessTimeUtc,
 				IsReadOnly = fileInfo.IsReadOnly,
-				ParentDirectory = CurrentStub
+				Size = fileInfo.Size,
+				ParentDirectory = _currentStub
 			};
 		}
 	}

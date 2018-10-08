@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 namespace File.System.Stub
 {
-
 	public sealed class DirectoryStructureReader
 	{
-		private readonly ConcurrentQueue<IReadOperation> _readOperations = new ConcurrentQueue<IReadOperation>();
+		private readonly Stack<IReadOperation> _readOperations = new Stack<IReadOperation>();
 		private readonly IDirectoryInformationFactory _directoryInfoFactory;
 
 		public DirectoryStructureReader() : this(new DirectoryInformationFactory())
@@ -40,9 +39,10 @@ namespace File.System.Stub
 		{
 			IDirectoryInformation directoryInfo = _directoryInfoFactory.Create(path);
 			DirectoryStub directoryStub = new DirectoryStub { Name = directoryInfo.Name };
-			_readOperations.Enqueue(new ReadDirectoryOperation(directoryStub, directoryInfo));
-			while (_readOperations.TryDequeue(out var readOperation))
+			_readOperations.Push(new ReadDirectoryOperation(directoryStub, directoryInfo));
+			while (_readOperations.Count > 0)
 			{
+				var readOperation = _readOperations.Pop();
 				DoOperation(readOperation);
 			}
 			return directoryStub;
@@ -53,7 +53,7 @@ namespace File.System.Stub
 			IEnumerable<IReadOperation> newOperations = readOperation.DoOperation();
 			foreach(var newOperation in newOperations)
 			{
-				_readOperations.Enqueue(newOperation);
+				_readOperations.Push(newOperation);
 			}
 		}
 	}
