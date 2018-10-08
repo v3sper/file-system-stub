@@ -19,9 +19,9 @@ namespace File.System.Stub
 			return stub != null &&
 				   Name == stub.Name &&
 				   Size == stub.Size &&
-				   //CreationTime == stub.CreationTime &&
+				   CreationTime == stub.CreationTime &&
 				   LastWriteTime == stub.LastWriteTime &&
-				   //LastAccessTime == stub.LastAccessTime &&
+				   LastAccessTime == stub.LastAccessTime &&
 				   IsReadOnly == stub.IsReadOnly;
 		}
 
