@@ -18,9 +18,15 @@ namespace File.System.Stub.IO
 		public IEnumerable<IReadOperation> DoOperation()
 		{
 			CurrentStub.Files = _directoryInfo.EnumerateFiles().Select(GetFileStubFromFileInfo).ToList();
-			var directoryOperationList = _directoryInfo.EnumerateDirectories().Select(dirInfo => new ReadDirectoryOperation(new DirectoryStub { ParentDirectory = CurrentStub, Name = dirInfo.Name }, dirInfo)).ToList();
+			var directoryOperationList = _directoryInfo.EnumerateDirectories().Select(CreateReadDirectoryOperation).ToList();
 			CurrentStub.Directories = directoryOperationList.Select(dirOperation => dirOperation.CurrentStub).ToList();
 			return directoryOperationList;
+		}
+
+		private ReadDirectoryOperation CreateReadDirectoryOperation(IDirectoryInformation dirInfo)
+		{
+			var directoryStub = new DirectoryStub { ParentDirectory = CurrentStub, Name = dirInfo.Name };
+			return new ReadDirectoryOperation(directoryStub, dirInfo);
 		}
 
 		private FileStub GetFileStubFromFileInfo(IFileInformation fileInfo)
