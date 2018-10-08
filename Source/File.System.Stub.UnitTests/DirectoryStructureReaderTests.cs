@@ -127,7 +127,7 @@ namespace File.System.Stub.UnitTests
 		[Test]
 		public void ItShouldThrowDirectoryNotFoundExceptionIfRootPathDoesNotExist()
 		{
-			_directoryInformationFactory.Create(_rootPath).Throws(new DirectoryNotFoundException());
+			_directoryInformationFactory.Create(_nonExistentPath).Throws(new DirectoryNotFoundException());
 
 			Action readingOfNonExistentPath = () => _reader.Read(_nonExistentPath);
 
