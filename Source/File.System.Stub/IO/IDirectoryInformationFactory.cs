@@ -1,6 +1,6 @@
 ﻿namespace File.System.Stub.IO
 {
-	public interface IDirectoryInformationFactory
+	internal interface IDirectoryInformationFactory
 	{
 		IDirectoryInformation Create(string path);
 	}

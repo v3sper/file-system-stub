@@ -2,3 +2,4 @@
 
 [assembly: InternalsVisibleTo("File.System.Stub.UnitTests")]
 [assembly: InternalsVisibleTo("File.System.Stub.IntegrationTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

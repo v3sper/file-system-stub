@@ -1,11 +1,10 @@
 ﻿using File.System.Stub.IO;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace File.System.Stub
 {
-	public sealed class DirectoryStructureReader
+	internal sealed class DirectoryStructureReader
 	{
 		private readonly Stack<IReadOperation> _readOperations = new Stack<IReadOperation>();
 		private readonly IDirectoryInformationFactory _directoryInfoFactory;
@@ -15,7 +14,7 @@ namespace File.System.Stub
 
 		}
 
-		public DirectoryStructureReader(IDirectoryInformationFactory directoryInfoFactory)
+		internal DirectoryStructureReader(IDirectoryInformationFactory directoryInfoFactory)
 		{
 			_directoryInfoFactory = directoryInfoFactory;
 		}

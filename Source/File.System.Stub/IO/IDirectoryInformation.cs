@@ -2,7 +2,7 @@
 
 namespace File.System.Stub.IO
 {
-	public interface IDirectoryInformation
+	internal interface IDirectoryInformation
 	{
 		IEnumerable<IFileInformation> EnumerateFiles();
 
