@@ -1,0 +1,160 @@
+{
+  "$id": "1",
+  "Path": "C:\\Users\\Patryk\\AppData\\Local\\Temp\\File.System.Stub.IntegrationTests\\SmallSet",
+  "Directory": {
+    "$id": "2",
+    "Name": "SmallSet",
+    "Directories": {
+      "$id": "3",
+      "$values": [
+        {
+          "$id": "4",
+          "Name": "Lorem",
+          "Directories": {
+            "$id": "5",
+            "$values": [
+              {
+                "$id": "6",
+                "Name": "Sit",
+                "Directories": {
+                  "$id": "7",
+                  "$values": []
+                },
+                "Files": {
+                  "$id": "8",
+                  "$values": [
+                    {
+                      "$id": "9",
+                      "Name": "adipiscing.txt",
+                      "Size": 445,
+                      "CreationTime": "2018-10-08T22:06:00.6123944Z",
+                      "LastWriteTime": "2018-10-07T21:29:00Z",
+                      "LastAccessTime": "2018-10-08T22:06:00.6123944Z",
+                      "IsReadOnly": false,
+                      "ParentDirectory": {
+                        "$ref": "6"
+                      }
+                    },
+                    {
+                      "$id": "10",
+                      "Name": "consectetur.txt",
+                      "Size": 1780,
+                      "CreationTime": "2018-10-08T22:06:00.6133971Z",
+                      "LastWriteTime": "2018-10-07T21:33:06Z",
+                      "LastAccessTime": "2018-10-08T22:06:00.6133971Z",
+                      "IsReadOnly": false,
+                      "ParentDirectory": {
+                        "$ref": "6"
+                      }
+                    },
+                    {
+                      "$id": "11",
+                      "Name": "elit.txt",
+                      "Size": 445,
+                      "CreationTime": "2018-10-08T22:06:00.6149003Z",
+                      "LastWriteTime": "2018-10-07T21:29:00Z",
+                      "LastAccessTime": "2018-10-08T22:06:00.6149003Z",
+                      "IsReadOnly": false,
+                      "ParentDirectory": {
+                        "$ref": "6"
+                      }
+                    }
+                  ]
+                },
+                "ParentDirectory": {
+                  "$ref": "4"
+                }
+              }
+            ]
+          },
+          "Files": {
+            "$id": "12",
+            "$values": [
+              {
+                "$id": "13",
+                "Name": "amet.txt",
+                "Size": 445,
+                "CreationTime": "2018-10-08T22:06:00.6068793Z",
+                "LastWriteTime": "2018-10-07T21:29:00Z",
+                "LastAccessTime": "2018-10-08T22:06:00.6068793Z",
+                "IsReadOnly": false,
+                "ParentDirectory": {
+                  "$ref": "4"
+                }
+              },
+              {
+                "$id": "14",
+                "Name": "dolor.txt",
+                "Size": 1780,
+                "CreationTime": "2018-10-08T22:06:00.6098873Z",
+                "LastWriteTime": "2018-10-07T21:32:56Z",
+                "LastAccessTime": "2018-10-08T22:06:00.6098873Z",
+                "IsReadOnly": false,
+                "ParentDirectory": {
+                  "$ref": "4"
+                }
+              },
+              {
+                "$id": "15",
+                "Name": "sit.txt",
+                "Size": 3560,
+                "CreationTime": "2018-10-08T22:06:00.611392Z",
+                "LastWriteTime": "2018-10-07T21:33:22Z",
+                "LastAccessTime": "2018-10-08T22:06:00.611392Z",
+                "IsReadOnly": false,
+                "ParentDirectory": {
+                  "$ref": "4"
+                }
+              }
+            ]
+          },
+          "ParentDirectory": {
+            "$ref": "2"
+          }
+        }
+      ]
+    },
+    "Files": {
+      "$id": "16",
+      "$values": [
+        {
+          "$id": "17",
+          "Name": "dolor.txt",
+          "Size": 4450,
+          "CreationTime": "2018-10-08T22:06:00.5652691Z",
+          "LastWriteTime": "2018-10-07T21:33:42Z",
+          "LastAccessTime": "2018-10-08T22:06:00.5652691Z",
+          "IsReadOnly": false,
+          "ParentDirectory": {
+            "$ref": "2"
+          }
+        },
+        {
+          "$id": "18",
+          "Name": "ipsum.txt",
+          "Size": 890,
+          "CreationTime": "2018-10-08T22:06:00.6028686Z",
+          "LastWriteTime": "2018-10-07T21:32:36Z",
+          "LastAccessTime": "2018-10-08T22:06:00.6028686Z",
+          "IsReadOnly": false,
+          "ParentDirectory": {
+            "$ref": "2"
+          }
+        },
+        {
+          "$id": "19",
+          "Name": "sit.txt",
+          "Size": 445,
+          "CreationTime": "2018-10-08T22:06:00.6169063Z",
+          "LastWriteTime": "2018-10-07T21:29:00Z",
+          "LastAccessTime": "2018-10-08T22:06:00.6169063Z",
+          "IsReadOnly": false,
+          "ParentDirectory": {
+            "$ref": "2"
+          }
+        }
+      ]
+    },
+    "ParentDirectory": null
+  }
+}

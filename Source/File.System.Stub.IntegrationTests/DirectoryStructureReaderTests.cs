@@ -1,10 +1,9 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
+using FileSystemFile = System.IO.File;
 
 namespace File.System.Stub.IntegrationTests
 {
@@ -12,6 +11,7 @@ namespace File.System.Stub.IntegrationTests
 	public class DirectoryStructureReaderTests
 	{
 		private string _basicSetTempFolderPath;
+		private RootStub _basicSetStub;
 
 		[OneTimeSetUp]
 		public void SetUpFixture()
@@ -21,7 +21,7 @@ namespace File.System.Stub.IntegrationTests
 			{
 				Directory.CreateDirectory(tempFolderPath);
 			}
-			_basicSetTempFolderPath = Path.Combine(tempFolderPath, "BasicSet");
+			_basicSetTempFolderPath = Path.Combine(tempFolderPath, "SmallSet");
 			if(Directory.Exists(_basicSetTempFolderPath))
 			{
 				Directory.Delete(_basicSetTempFolderPath, true);
@@ -30,7 +30,8 @@ namespace File.System.Stub.IntegrationTests
 			{
 				Directory.CreateDirectory(_basicSetTempFolderPath);
 			}
-			ZipFile.ExtractToDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "BasicSet.zip"), _basicSetTempFolderPath);
+			ZipFile.ExtractToDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "SmallSet.zip"), _basicSetTempFolderPath);
+			_basicSetStub = Serializer.Deserialize<RootStub>(FileSystemFile.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "SmallSet.json")));
 		}
 
 		[OneTimeTearDown]
@@ -47,9 +48,9 @@ namespace File.System.Stub.IntegrationTests
 		{
 			DirectoryStructureReader reader = new DirectoryStructureReader();
 
-			Action readFolder = () => reader.Read(_basicSetTempFolderPath);
+			RootStub result = reader.Read(_basicSetTempFolderPath);
 
-			readFolder.Should().NotThrow();
+			result.Should().Be(_basicSetStub);
 		}
 	}
 }

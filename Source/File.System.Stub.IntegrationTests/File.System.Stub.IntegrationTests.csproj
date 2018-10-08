@@ -8,7 +8,10 @@
     <ProjectReference Include="..\File.System.Stub\File.System.Stub.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="TestData\BasicSet.zip">
+    <None Update="TestData\SmallSet.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\SmallSet.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
