@@ -10,19 +10,19 @@ namespace File.System.Stub.UnitTests
 	internal static class EnumerableExtensionsTests
 	{
 		[Test]
-		public static void ItShouldReturnTrueWhenEnumerablesAreNull()
-		{
-			IEnumerable<SimpleObject> first = Enumerable.Empty<SimpleObject>();
-			IEnumerable<SimpleObject> second = Enumerable.Empty<SimpleObject>();
-
-			bool result = first.ElementsEqual(second, obj => obj.Key);
-
-			result.Should().BeTrue();
-		}
-
-		[Test]
 		public static void ItShouldReturnTrueWhenEnumerablesAreEmpty()
 		{
+			IEnumerable<SimpleObject> first = Enumerable.Empty<SimpleObject>();
+			IEnumerable<SimpleObject> second = Enumerable.Empty<SimpleObject>();
+
+			bool result = first.ElementsEqual(second, obj => obj.Key);
+
+			result.Should().BeTrue();
+		}
+
+		[Test]
+		public static void ItShouldReturnTrueWhenEnumerablesAreNull()
+		{
 			IEnumerable<SimpleObject> first = null;
 			IEnumerable<SimpleObject> second = null;
 
@@ -32,25 +32,25 @@ namespace File.System.Stub.UnitTests
 		}
 
 		[Test]
-		public static void ItShouldReturnFalseWhenFirstEnumerableIsNull()
+		public static void ItShouldReturnTrueWhenFirstEnumerableIsNull()
 		{
 			IEnumerable<SimpleObject> first = null;
 			IEnumerable<SimpleObject> second = Enumerable.Empty<SimpleObject>();
 
 			bool result = first.ElementsEqual(second, obj => obj.Key);
 
-			result.Should().BeFalse();
+			result.Should().BeTrue();
 		}
 
 		[Test]
-		public static void ItShouldReturnFalseWhenSecondEnumerableIsNull()
+		public static void ItShouldReturnTrueWhenSecondEnumerableIsNull()
 		{
 			IEnumerable<SimpleObject> first = Enumerable.Empty<SimpleObject>();
 			IEnumerable<SimpleObject> second = null;
 
 			bool result = first.ElementsEqual(second, obj => obj.Key);
 
-			result.Should().BeFalse();
+			result.Should().BeTrue();
 		}
 
 		[Test]

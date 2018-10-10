@@ -8,13 +8,13 @@ namespace File.System.Stub
 	{
 		public static bool ElementsEqual<T, TKey>(this IEnumerable<T> first, IEnumerable<T> second, Func<T, TKey> keySelector)
 		{
-			if(first == null && second == null)
+			if (first == null)
 			{
-				return true;
+				first = Enumerable.Empty<T>();
 			}
-			else if(first == null || second == null)
+			if (second == null)
 			{
-				return false;
+				second = Enumerable.Empty<T>();
 			}
 
 			return first.OrderBy(keySelector).SequenceEqual(second.OrderBy(keySelector));

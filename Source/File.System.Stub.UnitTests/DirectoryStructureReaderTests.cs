@@ -22,6 +22,7 @@ namespace File.System.Stub.UnitTests
 		private DateTime _mockedLastAccessTime;
 		private DateTime _mockedLastWriteTime;
 		private DateTime _mockedCreationTime;
+		private long _mockedFileSize;
 
 		private IDirectoryInformationFactory _directoryInformationFactory;
 		private IDirectoryInformation _twoLevelDirectory;
@@ -30,7 +31,7 @@ namespace File.System.Stub.UnitTests
 
 		private IFileInformation _fileInformation;
 
-		private DirectoryStructureReader _reader;
+		private DirectoryStructureReader _instance;
 
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
@@ -46,6 +47,7 @@ namespace File.System.Stub.UnitTests
 			_mockedLastAccessTime = new DateTime(2019, 11, 06, 22, 33, 22);
 			_mockedLastWriteTime = new DateTime(2018, 10, 07, 22, 33, 22);
 			_mockedCreationTime = new DateTime(2017, 9, 08, 02, 45, 34);
+			_mockedFileSize = 163;
 
 			_fileInformation = Substitute.For<IFileInformation>();
 			_fileInformation.Name.Returns(_mockedFileName);
@@ -53,6 +55,7 @@ namespace File.System.Stub.UnitTests
 			_fileInformation.LastAccessTimeUtc.Returns(_mockedLastAccessTime);
 			_fileInformation.LastWriteTimeUtc.Returns(_mockedLastWriteTime);
 			_fileInformation.CreationTimeUtc.Returns(_mockedCreationTime);
+			_fileInformation.Size.Returns(_mockedFileSize);
 
 			_nonEmptyDirectory = Substitute.For<IDirectoryInformation>();
 			_nonEmptyDirectory.Name.Returns(_nonEmptyDirectoryName);
@@ -72,7 +75,7 @@ namespace File.System.Stub.UnitTests
 		public void SetUp()
 		{
 			_directoryInformationFactory = Substitute.For<IDirectoryInformationFactory>();
-			_reader = new DirectoryStructureReader(_directoryInformationFactory);
+			_instance = new DirectoryStructureReader(_directoryInformationFactory);
 		}
 
 		[Test]
@@ -80,7 +83,7 @@ namespace File.System.Stub.UnitTests
 		{
 			_directoryInformationFactory.Create(Arg.Any<string>()).Returns(_twoLevelDirectory);
 
-			RootStub result = _reader.Read(_rootPath);
+			RootStub result = _instance.Read(_rootPath);
 
 			result.Path.Should().Be(_rootPath);
 			result.Directory.Name.Should().Be(_twoLevelDirectoryName);
@@ -96,7 +99,7 @@ namespace File.System.Stub.UnitTests
 		{
 			_directoryInformationFactory.Create(_rootPath).Returns(_emptyDirectory);
 
-			RootStub result = _reader.Read(_rootPath);
+			RootStub result = _instance.Read(_rootPath);
 
 			result.Path.Should().Be(_rootPath);
 			result.Directory.Name.Should().Be(_emptyDirectoryName);
@@ -109,15 +112,16 @@ namespace File.System.Stub.UnitTests
 		{
 			_directoryInformationFactory.Create(_rootPath).Returns(_nonEmptyDirectory);
 
-			RootStub result = _reader.Read(_rootPath);
+			RootStub result = _instance.Read(_rootPath);
 
 			result.Path.Should().Be(_rootPath);
 			result.Directory.Name.Should().Be(_nonEmptyDirectoryName);
 			result.Directory.Directories.Should().BeEmpty();
-			result.Directory.Files.Count().Should().Be(1);
+			result.Directory.Files.Count.Should().Be(1);
 
 			var fileInfo = result.Directory.Files.First();
 			fileInfo.Name.Should().Be(_mockedFileName);
+			fileInfo.Size.Should().Be(_mockedFileSize);
 			fileInfo.IsReadOnly.Should().Be(_mockedIsReadOnlyFlag);
 			fileInfo.CreationTime.Should().Be(_mockedCreationTime);
 			fileInfo.LastAccessTime.Should().Be(_mockedLastAccessTime);
@@ -129,7 +133,7 @@ namespace File.System.Stub.UnitTests
 		{
 			_directoryInformationFactory.Create(_nonExistentPath).Throws(new DirectoryNotFoundException());
 
-			Action readingOfNonExistentPath = () => _reader.Read(_nonExistentPath);
+			Action readingOfNonExistentPath = () => _instance.Read(_nonExistentPath);
 
 			readingOfNonExistentPath.Should().Throw<DirectoryNotFoundException>();
 		}
@@ -137,7 +141,7 @@ namespace File.System.Stub.UnitTests
 		[Test]
 		public void ItShouldThrowArgumentNullExceptionWhenRootPathIsNull()
 		{
-			Action readingOfNonExistentPath = () => _reader.Read(null);
+			Action readingOfNonExistentPath = () => _instance.Read(null);
 
 			readingOfNonExistentPath.Should().Throw<ArgumentNullException>();
 		}
