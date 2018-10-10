@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace File.System.Stub
+﻿namespace File.System.Stub
 {
 	public sealed class RootStub
 	{
