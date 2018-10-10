@@ -81,7 +81,7 @@ namespace File.System.Stub.UnitTests
 		[Test]
 		public void ItShouldReturnStructureForTwoLevelDirectory()
 		{
-			_directoryInformationFactory.Create(Arg.Any<string>()).Returns(_twoLevelDirectory);
+			_directoryInformationFactory.Create(_rootPath).Returns(_twoLevelDirectory);
 
 			RootStub result = _instance.Read(_rootPath);
 

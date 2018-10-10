@@ -9,7 +9,5 @@ namespace File.System.Stub.IO
 		IEnumerable<IDirectoryInformation> EnumerateDirectories();
 
 		string Name { get; }
-
-		string Path { get; }
 	}
 }

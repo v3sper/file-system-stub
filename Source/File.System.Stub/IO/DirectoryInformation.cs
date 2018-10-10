@@ -29,7 +29,5 @@ namespace File.System.Stub.IO
 		}
 
 		public string Name => _systemDirectoryInfo.Name;
-
-		public string Path => _systemDirectoryInfo.FullName;
 	}
 }

@@ -14,6 +14,6 @@ namespace File.System.Stub
 		public DirectoryStub ParentDirectory { get; set; }
 
 		[JsonIgnore]
-		public string Path => $"{ParentDirectory.ParentDirectory?.Path} / {Name}";
+		public string Path => $"{ParentDirectory.ParentDirectory?.Path}/{Name}";
 	}
 }
