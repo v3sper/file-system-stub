@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace File.System.Stub
 {
@@ -11,5 +12,8 @@ namespace File.System.Stub
 		public DateTime LastAccessTime { get; set; }
 		public bool IsReadOnly { get; set; }
 		public DirectoryStub ParentDirectory { get; set; }
+
+		[JsonIgnore]
+		public string Path => $"{ParentDirectory.ParentDirectory?.Path}/{Name}";
 	}
 }

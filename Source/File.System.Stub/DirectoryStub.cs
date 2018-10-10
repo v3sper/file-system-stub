@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace File.System.Stub
 {
@@ -8,5 +9,8 @@ namespace File.System.Stub
 		public ICollection<DirectoryStub> Directories { get; set; }
 		public ICollection<FileStub> Files { get; set; }
 		public DirectoryStub ParentDirectory { get; set; }
+
+		[JsonIgnore]
+		public string Path => $"{ParentDirectory?.Path}/{Name}";
 	}
 }
